@@ -12,11 +12,11 @@
 #include<string>
 #include<list>
 #include <string.h>
-#include "test.h"
+#include "Parserini.h"
 
 using namespace std;
 
-bool 	Parse::load_file(const string &file)
+bool 	Parser::load_file(const string &file)
 {
 	bool status =false;
 	char  buffer[100]={0};
@@ -29,7 +29,6 @@ bool 	Parse::load_file(const string &file)
 		
 	}  
 	status=true;
-	int line_number=0;
 	while (!in.eof())
 	{	
 		string str;
@@ -45,13 +44,13 @@ bool 	Parse::load_file(const string &file)
 	//	getline(in,str);
 	//	lines.insert(make_pair(str,num));
 		lines.push_back(str);
-		++line_number;
+		++line_num;
 	}
 	in.close();
 	return status;
 }
 
-bool 	Parse::update_file(void)
+bool 	Parser::update_file(void)
 {
 	
 }
@@ -114,7 +113,7 @@ char* TrimSpace(char* name)
 }
 */
 
-void Parse::dump_ini(void)
+void Parser::dump_ini(void)
 {
 /*
    for(std::map<CStdString, IniSection>::iterator kvp=m_iniData.begin();kvp!=m_iniData.end();++kvp)
@@ -132,7 +131,7 @@ void Parse::dump_ini(void)
 }
 
 
-int Parse::parse_line(void)
+int Parser::parse_line(void)
 {
 	char buffer[50]={0};
 	for(vector <string>::iterator it =lines.begin();it!=lines.end();++it)
@@ -160,7 +159,7 @@ int Parse::parse_line(void)
 	
 }
 
-bool  Parse::get_value(const string &key,string &value)
+bool  Parser::get_value(const string &key,string &value)
 {
 
 	bool status=false;
@@ -180,7 +179,7 @@ bool  Parse::get_value(const string &key,string &value)
 	
 }
 
-bool Parse::set_value(const char* key,const char* new_value)
+bool Parser::set_value(const char* key,const char* new_value)
 {
 	bool status=false;
 	map <string,string>::iterator it =key2word.find(key);
@@ -196,74 +195,4 @@ bool Parse::set_value(const char* key,const char* new_value)
 	
 }
 
-int main(void)
-{
-
-      Parse p;
-	
-	string file("example.ini");
-	p.load_file(file);
-	
-	cout<<"================"<<endl;
-	vector < string>::iterator it =p.lines.begin();
-	for(;it!=p.lines.end();++it){
-		cout<<*it<<endl;
-	}
-	
-	cout<<"****************************"<<endl;
-
-	//一行行的解析，把里面的键值对给提取出来
-	p.parse_line();
-/*
-	map <string,string>::iterator iter =p.key2word.begin();
-	for(;iter!=p.key2word.end();++iter){
-		cout<<iter->first<<endl;
-	}
-	cout<<"****************************"<<endl;
-*/
-
-
-	
-	p.set_value("Cheese","bluelink");
-
-	/*
-	if(p.set_value("name","tony"))
-	{
-		//cout<<"add new  value"<<endl;
-
-	}
-
-	
-	if(p.set_value("JAME","yoyo"))
-	{
-			//cout<<"add new  value"<<endl;
-	
-	}
-	*/
-
-	if(p.set_value("Year","2003"))
-	{
-		//cout<<"add new  value"<<endl;
-
-
-	}
-	
-	
-	string eatvalue;
-	string yearvalue;
-	string food="Cheese";
-	string time="Year";
-	p.get_value(food,eatvalue);
-	cout<<food<<"="<<eatvalue<<endl;
-	p.get_value(time,yearvalue);
-	cout<<time<<"="<<yearvalue<<endl;
-
-	cout<<"@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
-	map <string,string>::iterator iter2 =p.key2word.begin();
-	for(;iter2!=p.key2word.end();++iter2){
-		cout<<iter2->first<<"="<<iter2->second<<endl;
-	}
-	
-	return 0;
-}
 

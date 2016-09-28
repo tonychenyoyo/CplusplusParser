@@ -1,62 +1,82 @@
-#include <iostream>  
-#include <string>  
+#include<iostream>
+#include <fstream>
+#include<map>
+#include<vector>
+#include<string>
+#include<list>
+#include <string.h>
+#include "Parserini.h"
+
 using namespace std;  
   
-string& trim(string &);  
- string& left_trim(string &s)  ; 
- string& right_trim(string &s)   ;
-int main()   
-{  
-    string s = "	Hello World        ";  
-    cout << s << " size:" << s.size() << endl;  
-
-
-	//cout<<"====left======"<<endl;
-	
-	//cout << left_trim(s) << " size:" << left_trim(s).size() << endl;	
-//	cout<<"====right======"<<endl;
-	
-//	cout << right_trim(s) << " size:" << right_trim(s).size() << endl;	
-	
-    cout << trim(s) << " size:" << trim(s).size() << endl;  
+  int main(void)
+  {
   
-    return 0;  
-}  
+	  Parser p;
+	  
+	  string file("example.ini");
+	  p.load_file(file);
+	  
+	  cout<<"================"<<endl;
+	  vector < string>::iterator it =p.lines.begin();
+	  for(;it!=p.lines.end();++it){
+		  cout<<*it<<endl;
+	  }
+	  
+	  cout<<"****************************"<<endl;
   
-string& trim(string &s)   
-{  
-    if (s.empty())   
-    {  
-        return s;  
-    }  
-    s.erase(0,s.find_first_not_of(" "));  
-    s.erase(s.find_last_not_of(" ") + 1);  
-    return s;  
-}  
-
-string& left_trim(string &s)   
-{  
-    if (s.empty())   
-    {  
-        return s;  
-    }  
-    s.erase(0,s.find_first_not_of(" "));  //从第一个字符开始判断，直到不是空格字符
-  //  s.erase(s.find_last_not_of(" ") + 1);  
-    return s;  
-}  
-
-
-string& right_trim(string &s)   
-{  
-    if (s.empty())   
-    {  
-        return s;  
-    }  
-  //  s.erase(0,s.find_first_not_of(" "));  
-    s.erase(s.find_last_not_of(" ") + 1);  //从最后一个不是空格的开始删除
-    return s;  
-}  
-
-
-
+	  //一行行的解析，把里面的键值对给提取出来
+	  p.parse_line();
+  /*
+	  map <string,string>::iterator iter =p.key2word.begin();
+	  for(;iter!=p.key2word.end();++iter){
+		  cout<<iter->first<<endl;
+	  }
+	  cout<<"****************************"<<endl;
+  */
+  
+  
+	  
+	  p.set_value("Cheese","bluelink");
+  
+	  
+	  if(p.set_value("name","tony"))
+	  {
+		  //cout<<"add new	value"<<endl;
+  
+	  }
+  
+	  
+	  if(p.set_value("JAME","yoyo"))
+	  {
+			  //cout<<"add new	value"<<endl;
+	  
+	  }
+	  
+  
+	  if(p.set_value("Year","2003"))
+	  {
+		  //cout<<"add new	value"<<endl;
+  
+  
+	  }
+	  
+	  
+	  string eatvalue;
+	  string yearvalue;
+	  string food="Cheese";
+	  string time="Year";
+	  p.get_value(food,eatvalue);
+	  cout<<food<<"="<<eatvalue<<endl;
+	  p.get_value(time,yearvalue);
+	  cout<<time<<"="<<yearvalue<<endl;
+  
+	  cout<<"@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
+	  map <string,string>::iterator iter2 =p.key2word.begin();
+	  for(;iter2!=p.key2word.end();++iter2){
+		  cout<<iter2->first<<"="<<iter2->second<<endl;
+	  }
+	  
+	  return 0;
+  }
 
